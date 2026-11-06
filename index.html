@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Degave Diwali Countdown & Check-in</title>
+<style>
+:root{color-scheme:dark;--bg:#12062e;--bg2:#3a1166;--card:rgba(255,255,255,.08);--line:rgba(246,196,83,.35);--gold:#f6c453;--gold2:#ffe29a;--txt:#fbefd5;--mut:#c9b9e6;--ok:#6ee7a0;--bad:#ff8a8a;box-sizing:border-box}
+*{box-sizing:inherit}
+body{margin:0;min-height:100vh;background:var(--bg);background-image:radial-gradient(ellipse at 50% -10%,var(--bg2),transparent 65%),radial-gradient(circle at 90% 100%,#5a1a4a,transparent 45%);color:var(--txt);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;text-align:center}
+main{max-width:520px;margin:0 auto;padding:18px 16px 40px}
+h1{font-family:Georgia,"Times New Roman",serif;font-size:1.7rem;margin:6px 0 2px;background:linear-gradient(#fff1b3,#e2a336);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{color:var(--mut);margin:0 0 14px;font-size:.95rem}
+nav{display:flex;gap:6px;margin:0 0 16px}
+nav a{flex:1;padding:10px 4px;border-radius:12px;border:1px solid var(--line);color:var(--txt);text-decoration:none;font-size:.9rem;background:var(--card);cursor:pointer;user-select:none}
+nav a.active{background:var(--gold);color:#2a1200;font-weight:700}
+section{display:none}
+section.active{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin:0 0 14px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.box{background:rgba(0,0,0,.35);border:1px solid var(--line);border-radius:14px;padding:12px 2px}
+.box b{display:block;font-size:2.1rem;font-variant-numeric:tabular-nums;color:var(--gold2)}
+.box small{color:var(--mut);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase}
+#cmsg{margin:14px 0 0;font-size:1.05rem}
+.rules{text-align:left;margin:0;padding-left:1.1rem;line-height:1.6}
+input{width:100%;padding:13px;border-radius:12px;border:1px solid var(--line);background:rgba(0,0,0,.35);color:var(--txt);font-size:1rem;margin:0 0 10px}
+.btn{display:block;width:100%;padding:14px;border-radius:14px;border:0;background:linear-gradient(#ffd96b,#e39a22);color:#2a1200;font-weight:800;font-size:1.05rem;text-decoration:none;cursor:pointer;margin:8px 0 0}
+.btn.alt{background:transparent;border:1px solid var(--gold);color:var(--gold2);font-weight:600}
+.err{color:var(--bad);min-height:1.2em;margin:6px 0 0}
+.big{font-size:3.6rem;line-height:1}
+ol{list-style:none;margin:0;padding:0;text-align:left}
+li{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+li .n{flex:1}li small{display:block;color:var(--mut)}
+.pos{color:var(--ok)}.neg{color:var(--bad)}.mut{color:var(--mut);justify-content:center}
+[hidden]{display:none!important}
+.warn{color:#ffd27a;font-size:.9rem}
+</style>
+</head>
+<body>
+<main>
+<div class="big">🪔</div>
+<h1>Degave Family Diwali Party</h1>
+<p class="sub" id="sub">Saturday, 7th November 2026 · 6 PM sharp · Punggol</p>
+
+<nav>
+  <a id="tab-countdown" class="active" onclick="switchTab('countdown')">⏳ Countdown</a>
+  <a id="tab-checkin" onclick="switchTab('checkin')">✅ Check in</a>
+  <a id="tab-board" onclick="switchTab('board')">🏆 Board</a>
+</nav>
+
+<!-- 1. COUNTDOWN SECTION -->
+<section id="sec-countdown" class="active">
+  <div class="card">
+    <div class="grid">
+      <div class="box"><b id="D">00</b><small>Days</small></div>
+      <div class="box"><b id="Hr">00</b><small>Hours</small></div>
+      <div class="box"><b id="M">00</b><small>Mins</small></div>
+      <div class="box"><b id="S">00</b><small>Secs</small></div>
+    </div>
+    <p id="cmsg">Early bird surprise for check-ins between 6:00 PM and 6:30 PM!</p>
+  </div>
+
+  <div class="card">
+    <h3 style="margin:0 0 8px;color:var(--gold2)">🎁 Early bird surprise</h3>
+    <ul class="rules" style="list-style:disc">
+      <li style="display:list-item;border:0;padding:0">Check-in opens at <b>5:30 PM</b>. Scan the QR at the door.</li>
+      <li style="display:list-item;border:0;padding:0">Check in between <b>6:00 PM</b> and <b>6:30 PM</b> to claim your <b class="pos">early bird surprise 🎁</b></li>
+      <li style="display:list-item;border:0;padding:0">Checked in before <b>6:00 PM</b>? Please check in again from <b>6:00 PM</b> to claim it.</li>
+    </ul>
+  </div>
+
+  <button class="btn" type="button" onclick="switchTab('checkin')">I’m here! Check in</button>
+</section>
+
+<!-- 2. CHECK-IN SECTION -->
+<section id="sec-checkin">
+  <div class="card" id="ciForm">
+    <h3 style="margin:0 0 10px;color:var(--gold2)">Welcome! Check in to score</h3>
+    <p class="warn" id="ciHint" style="margin:0 0 10px"></p>
+    <input id="nm" placeholder="Your name" maxlength="30" autocomplete="name">
+    <button class="btn" id="ciBtn" type="button" onclick="handleCheckIn()">Check in now</button>
+    <p class="err" id="ciErr"></p>
+  </div>
+
+  <div class="card" id="ciRes" hidden>
+    <div class="big" id="ciBig">🎉</div>
+    <p id="ciTxt" style="font-size:1.2rem"></p>
+    <p class="warn" id="ciNote"></p>
+    <button class="btn alt" type="button" onclick="switchTab('board')">View Live Leaderboard</button>
+  </div>
+</section>
+
+<!-- 3. BOARD SECTION -->
+<section id="sec-board">
+  <div class="card">
+    <h3 style="margin:0 0 10px;color:var(--gold2)">👑 Host: live guest list</h3>
+    <input id="hp" type="password" placeholder="Host PIN (e.g. 1234)" autocomplete="off">
+    <button class="btn" id="bdRef" type="button" onclick="loadBoard()">Refresh guest list</button>
+    <p class="sub" id="bdSum" style="margin:10px 0 0"></p>
+    <ol id="bd"></ol>
+    <p class="sub" id="bdMsg"></p>
+  </div>
+
+  <div class="card">
+    <h3 style="margin:0 0 10px;color:var(--gold2)">Add a guest manually</h3>
+    <input id="hn" placeholder="Guest name" maxlength="30">
+    <input id="htm" type="time" aria-label="Arrival time (Singapore)">
+    <p class="sub" style="margin:0 0 6px">Leave time empty to use right now.</p>
+    <button class="btn" id="hAdd" type="button" onclick="handleManualAdd()">Add guest</button>
+    <p class="sub" id="hMsg"></p>
+  </div>
+</section>
+</main>
+
+<script>
+// --- YOUR GOOGLE APPS SCRIPT URL ---
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwS33q9AA4MJ0meS9n6iIFnJIhLi54ffU1CL8p2Pw19J3u372D12SGHAsMOtXqu3u3GKA/exec';
+
+// Singapore Party Target: Saturday, Nov 7, 2026, 6:00 PM SGT
+const PARTY_START = Date.parse('2026-11-07T18:00:00+08:00');
+const EARLY_BIRD_END = PARTY_START + (30 * 60 * 1000); // 6:30 PM
+
+// --- RELIABLE TAB SWITCHER ---
+function switchTab(tabId) {
+  ['countdown', 'checkin', 'board'].forEach(id => {
+    const sec = document.getElementById('sec-' + id);
+    const tab = document.getElementById('tab-' + id);
+    if (sec) sec.classList.toggle('active', id === tabId);
+    if (tab) tab.classList.toggle('active', id === tabId);
+  });
+  window.location.hash = '#' + tabId;
+  if (tabId === 'board') loadBoard();
+}
+
+// Listen to browser back/forward and direct hash URLs
+window.addEventListener('hashchange', () => {
+  const hash = window.location.hash.replace('#', '');
+  if (['countdown', 'checkin', 'board'].includes(hash)) {
+    switchTab(hash);
+  }
+});
+
+// --- COUNTDOWN TICKER ---
+function tick() {
+  const now = Date.now();
+  const diff = PARTY_START - now;
+
+  if (diff > 0) {
+    const s = Math.floor(diff / 1000);
+    document.getElementById('D').textContent = String(Math.floor(s / 86400)).padStart(2, '0');
+    document.getElementById('Hr').textContent = String(Math.floor((s % 86400) / 3600)).padStart(2, '0');
+    document.getElementById('M').textContent = String(Math.floor((s % 3600) / 60)).padStart(2, '0');
+    document.getElementById('S').textContent = String(s % 60).padStart(2, '0');
+    document.getElementById('cmsg').textContent = 'Check in between 6:00 PM and 6:30 PM to claim your early bird surprise 🎁';
+  } else {
+    document.getElementById('D').textContent = '00';
+    document.getElementById('Hr').textContent = '00';
+    document.getElementById('M').textContent = '00';
+    document.getElementById('S').textContent = '00';
+    if (now <= EARLY_BIRD_END) {
+      const minsLeft = Math.ceil((EARLY_BIRD_END - now) / 60000);
+      document.getElementById('cmsg').textContent = `Early bird time! ${minsLeft} min left to claim your surprise 🎁`;
+    } else {
+      document.getElementById('cmsg').textContent = 'Welcome! The party is on 🪔';
+    }
+  }
+}
+setInterval(tick, 1000);
+tick();
+
+// --- GUEST CHECK-IN ---
+async function handleCheckIn() {
+  const nameInput = document.getElementById('nm');
+  const err = document.getElementById('ciErr');
+  const name = nameInput.value.trim();
+
+  if (!name) {
+    err.textContent = 'Please enter your name first 🙂';
+    return;
+  }
+  err.textContent = '';
+
+  const btn = document.getElementById('ciBtn');
+  btn.disabled = true;
+  btn.textContent = 'Checking in…';
+
+  try {
+    const res = await fetch(SCRIPT_URL + '?' + new URLSearchParams({
+      action: 'checkin',
+      name: name,
+      start: PARTY_START
+    }));
+    const data = await res.json();
+
+    document.getElementById('ciForm').hidden = true;
+    document.getElementById('ciRes').hidden = false;
+
+    if (data.bird) {
+      document.getElementById('ciBig').textContent = '🎉';
+      document.getElementById('ciTxt').innerHTML = `<b>${name}</b>, you’re an early bird!<br>Show this screen to claim your surprise 🎁`;
+    } else {
+      document.getElementById('ciBig').textContent = '🪔';
+      document.getElementById('ciTxt').innerHTML = `<b>${name}</b>, you are checked in!<br>Welcome to the party! 🎶`;
+    }
+  } catch (e) {
+    document.getElementById('ciForm').hidden = true;
+    document.getElementById('ciRes').hidden = false;
+    document.getElementById('ciBig').textContent = '✅';
+    document.getElementById('ciTxt').innerHTML = `<b>${name}</b>, you are checked in!`;
+    document.getElementById('ciNote').textContent = 'Show this screen to the host.';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Check in now';
+  }
+}
+
+// --- HOST MANUAL ENTRY ---
+async function handleManualAdd() {
+  const nameInput = document.getElementById('hn');
+  const pinInput = document.getElementById('hp');
+  const timeInput = document.getElementById('htm');
+  const msg = document.getElementById('hMsg');
+
+  const name = nameInput.value.trim();
+  const pin = pinInput.value.trim();
+
+  if (!pin) { msg.textContent = 'Enter the host PIN.'; return; }
+  if (!name) { msg.textContent = 'Enter the guest name.'; return; }
+
+  let targetTs = Date.now();
+  if (timeInput.value) {
+    targetTs = Date.parse('2026-11-07T' + timeInput.value + ':00+08:00');
+  }
+
+  msg.textContent = 'Adding guest…';
+  try {
+    const res = await fetch(SCRIPT_URL + '?' + new URLSearchParams({
+      action: 'manual',
+      name: name,
+      pin: pin,
+      ts: targetTs,
+      start: PARTY_START
+    }));
+    const data = await res.json();
+
+    if (data.ok) {
+      msg.textContent = `Added ${data.name}${data.bird ? ' 🎁 (Early Bird)' : ''} ✅`;
+      nameInput.value = '';
+      timeInput.value = '';
+      loadBoard();
+    } else {
+      msg.textContent = data.err === 'pin' ? 'Wrong host PIN.' : 'Failed to add guest.';
+    }
+  } catch (e) {
+    msg.textContent = 'Network error while adding guest.';
+  }
+}
+
+// --- LIVE LEADERBOARD LOADER ---
+async function loadBoard() {
+  const pin = document.getElementById('hp').value.trim();
+  const msg = document.getElementById('bdMsg');
+  const list = document.getElementById('bd');
+  const sum = document.getElementById('bdSum');
+
+  if (!pin) {
+    msg.textContent = 'Enter the host PIN above to view the guest list.';
+    return;
+  }
+  msg.textContent = 'Loading guest list…';
+
+  try {
+    const res = await fetch(SCRIPT_URL + '?' + new URLSearchParams({
+      action: 'board',
+      pin: pin
+    }));
+    const json = await res.json();
+
+    if (!json.ok) {
+      msg.textContent = 'Wrong host PIN.';
+      return;
+    }
+
+    msg.textContent = '';
+    const rows = json.rows || [];
+    const birds = rows.filter(r => r.bird).length;
+
+    sum.textContent = rows.length ? `${rows.length} checked in · ${birds} early bird${birds === 1 ? '' : 's'} 🎁` : '';
+
+    if (rows.length === 0) {
+      list.innerHTML = '<li class="mut">No check-ins yet</li>';
+      return;
+    }
+
+    list.innerHTML = rows.map(r => {
+      const timeStr = new Date(r.ts).toLocaleTimeString('en-SG', { timeZone: 'Asia/Singapore', hour: 'numeric', minute: '2-digit', hour12: true });
+      return `<li><span>${r.bird ? '🎁' : '✅'}</span><span class="n">${r.name}<small>${timeStr}</small></span></li>`;
+    }).join('');
+
+  } catch (e) {
+    msg.textContent = 'Could not reach the database. Try refreshing.';
+  }
+}
+
+// On first load, check URL hash (e.g. #checkin)
+const initHash = window.location.hash.replace('#', '');
+if (['countdown', 'checkin', 'board'].includes(initHash)) {
+  switchTab(initHash);
+}
+</script>
+</body>
+</html>
